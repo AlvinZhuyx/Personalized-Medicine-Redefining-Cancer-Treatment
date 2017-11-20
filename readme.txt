@@ -7,8 +7,12 @@ The data_preprocessing.py do data cleaning
 The word_embedding.py do doc embedding by Doc2Vec;
 The word_embedding_load.py is another way to get doc embedding: we load the existed word embedding trained on PubMed by Chiu.(2016) and trained doc vector based on these vectors.
 The classification.py trained a classification model on word embedding;(now we use NN)
+The xgboost_classifier.py using the xgboost tree to do the classfication;(using word embedding as input)
+The xgb_dataprecessing.py is the code of https://www.kaggle.com/the1owl/redefining-treatment-0-57456, which use transform and fit_transform to do data preprocessing (we use it as the baseline of our xgboost method)
 The testaccuracy.py calculation the test accuracy by the classification model we just trained;
 The load_test.py load the stage-2 data and test the accuracy;
+The enhanced.py and enhanced_baseline.py is some method I used to try to enhance the result.
+
 
 For the data:
 docEmbeddings_5_clean is the doc embedding get from doc2vec and trained for 5 epoch;
