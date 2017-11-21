@@ -21,3 +21,4 @@ docEmbeddings_5_load is the doc embedding get from doc2vec with loaded word embe
 docEmbeddings_30_load is the doc embedding get from doc2vec with loaded word embedding and trained for 30 epoch(windows = 2);
 docEmbeddings_30_loadwin30 is the doc embedding get from doc2vec with loaded word embedding and trained for 30 epoch(windows = 30);
 docEmbeddings_30_loads2 is the doc emdedding for the seconde tage data
+docEmbeddings_30_loadall is using all the labeled data(both training, 1st stage, 2nd stage test data) to train embedding

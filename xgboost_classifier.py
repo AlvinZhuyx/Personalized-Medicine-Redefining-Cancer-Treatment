@@ -11,17 +11,17 @@ import sklearn
 import pandas as pd
 import numpy as np
 
-fold = 1
+fold = 5
 evallist = []
 denom = 0
 
 #for i in range(len(train_y)):
-    #train_y[i] += 1
+    #train_y[i] -=1 
     
 for i in range(fold):
     params = {
         'eta': 0.03333,
-        'max_depth': 4,
+        'max_depth': 8,
         'objective': 'multi:softprob',
         'eval_metric': 'mlogloss',
         'num_class': 9,
@@ -40,8 +40,9 @@ for i in range(fold):
         pred = model.predict(xgb.DMatrix(test_set), ntree_limit=model.best_ntree_limit+80)
         y_final += pred
     denom += 1
-
+    
 y_final /= denom
+y_predict_final = y_final
 '''
 #enhanced
 n = 5

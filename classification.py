@@ -35,11 +35,11 @@ for i in range(30):
     estimator=model.fit(train_set, encoded_y, validation_split=0.2, epochs=2, batch_size=64)
     if (best_acc < estimator.history['val_acc'][-1] * 100):
         best_acc = estimator.history['val_acc'][-1] * 100
-        model.save_weights('best_weight_predict.h5')
+        model.save_weights('best_weight_predict_all.h5')
         
 print("Training accuracy: %.2f%% / Best validation accuracy: %.2f%%" % (100*estimator.history['acc'][-1], best_acc))
 '''
-model.load_weights('best_weight_predict.h5')
+model.load_weights('best_weight_predict_all.h5')
 '''
 import matplotlib.pyplot as plt
 plt.plot(estimator.history['acc'])
@@ -65,7 +65,7 @@ y_pred = model.predict_proba(test_set)
 #enha
 n = 50
 
-a = 0.15
+a = 0.2
 y_predict_final = np.zeros((test_size, 9))
 y_predict_final += y_pred * (1 - a);
 

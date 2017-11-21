@@ -16,7 +16,7 @@ Text_INPUT_DIM=200
 
 
 text_model=None
-filename='docvec/docEmbeddings_30_load_s2.d2v'
+filename='docvec/docEmbeddings_30_load_all.d2v'
 if lib.os.path.isfile(filename):
     text_model = Doc2Vec.load(filename)
     print('successful load\n')

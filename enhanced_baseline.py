@@ -14,7 +14,7 @@ from keras import optimizers
 tmp_distance = np.zeros((train_size))
 dic_train_id = np.zeros((train_size, 50))
 dic_test_id = np.zeros((test_size, 50))
-'''
+
 train_code = np.hstack((truncated_one_hot_gene[:train_size], truncated_one_hot_variation[:train_size]))
 test_code = np.hstack((truncated_one_hot_gene[train_size:], truncated_one_hot_variation[train_size:]))
 
@@ -45,3 +45,4 @@ for i in range(test_size):
         tmp_distance[j] = np.sqrt(np.sum(np.square(text_test_arrays[i] - text_train_arrays[j])))
     tmp_sort = np.argsort(tmp_distance)
     dic_test_id[i] = tmp_sort[:50]  
+'''
