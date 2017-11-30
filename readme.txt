@@ -25,3 +25,19 @@ docEmbeddings_30_loadall is using all the labeled data(both training, 1st stage,
 
 The pre-trained word embedding: 
 https://drive.google.com/drive/folders/1h0vK_ZibfgCFH_XCHqKA0aZs3jlj-37m?usp=sharing
+
+
+###################################
+#below added by Quincy @2017/11/28
+###################################
+Dependencies:
+p7zip
+wget
+Re
+gensim
+Pandas
+nltk
+numpy
+keras
+tensorflow
+
