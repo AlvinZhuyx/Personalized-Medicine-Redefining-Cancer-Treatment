@@ -1,12 +1,11 @@
 # UCLA-CS249-Project
-**Personalized-Medicine-Redefining-Cancer-Treatment
+** Personalized-Medicine-Redefining-Cancer-Treatment
 
-## codes :  
+## Codes :  
 ### src:
-**util.py
-**demo.ipynb
-**baseline_classification.py
-
+** util.py
+** demo.ipynb
+** baseline_classification.py
 
 ## Data :
 
