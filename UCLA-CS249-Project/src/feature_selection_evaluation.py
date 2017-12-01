@@ -34,8 +34,13 @@ def runTextModelEval(textModelName = [], PATH = '../model/doc2vec/'):
 	svd = TruncatedSVD(n_components=GENE_INPUT_DIM, random_state=12)
 	for textModel in textModelName:
 
-		model = loadTextModel(PATH + textModel)
+		try:
+			model = wel.loadTextModel(PATH + textModel)
+		except:
+			print('Failed on ' + textModel)
+			continue
 		if model == None:
+			print('Failed on ' + textModel)
 			continue
 		text_train_arrays, text_test_arrays = wel.getTextVec(model, train_size, test_size, 200)
 		truncated_one_hot_gene = wel.getGeneVec(all_data, svd)
