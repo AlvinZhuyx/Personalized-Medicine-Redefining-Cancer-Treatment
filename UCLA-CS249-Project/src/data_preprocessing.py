@@ -47,7 +47,7 @@ def cleanup(text):
 def data_preprocess(all_data):
     allText = all_data['Text'].apply(cleanup) # a list of str
     sentences = constructLabeledSentences(allText)
-    return [allText, sentences]
+    return sentences
 
 if __name__ == '__main__':
-    [allText, sentences] = data_preprocess(all_data)
+    sentences = data_preprocess(all_data)

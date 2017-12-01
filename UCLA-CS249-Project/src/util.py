@@ -9,8 +9,8 @@ import numpy as np
 from nltk.corpus import stopwords #nlp库
 from gensim.models import Doc2Vec
 from gensim.models.doc2vec import LabeledSentence
-from gensim import utils
-
+#Gensim is a Python library for *topic modelling*, *document indexing* and *similarity retrieval* with large corpora.
+from gensim import utils as gutils
 '''
 #loading original data
 @return: 
@@ -67,8 +67,37 @@ class Doc2VecParam:
 		self.iter = iter
 		self.seed = seed
 
+
 def Doc2VecWrapper(param):
 	text_model = Doc2Vec(min_count=param.min_count, window=param.window, size=param.size, sample=param.sample, negative=param.negative, workers=param.workers, iter=param.iter, seed=param.seed)
 	return text_model
+def constructLabeledSentences(data):
+    sentences=[]
+    for index, row in data.iteritems():
+        sentences.append(LabeledSentence(gutils.to_unicode(row).split(), ['Text' + '_%s' % str(index)]))
+    return sentences
+
+def textClean(text):
+    text = re.sub(r"[^A-Za-z0-9^,!.\/'+-=]", " ", text)#[^]表示match所有不在集合里的元素
+    text = text.lower().split()
+    stops = set(stopwords.words("english"))
+    text = [w for w in text if not w in stops]    
+    text = " ".join(text)
+    return(text)
+    
+def cleanup(text):
+    text = textClean(text)
+    #maketrans(x,y,z)表示建立映射表，使得x被替换为y并且删除z，translate接受映射表为参数并且完成映射
+    text= text.translate(str.maketrans("","", string.punctuation))#去除标点符号
+    return text
+
+'''
+@param all_data, the raw data loaded from loadData() function, containing 4 fields: [ID, Gene, Variation, Text]
+@return 
+'''
+def data_preprocess(all_data):
+    allText = all_data['Text'].apply(cleanup) # a list of str
+    sentences = constructLabeledSentences(allText)
+    return sentences
 
 
