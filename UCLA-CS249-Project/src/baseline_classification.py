@@ -61,7 +61,7 @@ def getLabels(encoding):
 	@param: encoding, one-hot encoding, supposed to be in shape [N, 9] (we expect 9 classes for N records)
 	@return: labels, ranging 0 to 8
 	'''
-    return [ np.where(r==1)[0][0] for r in encoding ]
+	return [ np.where(r==1)[0][0] for r in encoding ]
 
 
 
