@@ -32,7 +32,10 @@ See also util.Doc2VecParam, util.Doc2VecWrapper()
 def getTextModel(sentences, param = util.Doc2VecParam(), filename=''):
     if filename == '' or not os.path.isfile(filename):
         print('Creating model...')
-        filename = '../model/doc2vec/docEmbeddings_30_load_all.d2v'
+        filename = '../model/doc2vec/newModel.d2v'
+        if not os.path.isdir("../model/doc2vec/"):
+            os.mkdir('../model/doc2vec')
+        
         source_file = "../data/bio_nlp_vec/PubMed-shuffle-win-30.bin"
         text_model = util.Doc2VecWrapper(param)
         text_model.build_vocab(sentences)
