@@ -29,7 +29,7 @@ See also util.Doc2VecParam, util.Doc2VecWrapper()
 
 '''
 
-def getTextModel(param = util.Doc2VecParam(), filename=''):
+def getTextModel(sentences, param = util.Doc2VecParam(), filename=''):
     if filename == '' or not os.path.isfile(filename):
         print('Creating model...')
         filename = '../model/doc2vec/docEmbeddings_30_load_all.d2v'

@@ -7,6 +7,7 @@ import string
 import pandas as pd
 import numpy as np
 from nltk.corpus import stopwords #nlp库
+from gensim.models import Doc2Vec
 from gensim.models.doc2vec import LabeledSentence
 from gensim import utils
 
