@@ -23,6 +23,10 @@ svd = TruncatedSVD(n_components=GENE_INPUT_DIM, n_iter=25, random_state=12)
 
 def getTextModel(sentences, param = util.Doc2VecParam(), filename='', source_file = ''):
     '''
+    
+    !!!NOT RECOMMENDED!!!
+    !!!Use loadTextModel() or trainTextModel() instead!!!
+
     Get text_model either from pre-trained models or train it using assigned parameters.
     See also util.Doc2VecParam, util.Doc2VecWrapper()
 
