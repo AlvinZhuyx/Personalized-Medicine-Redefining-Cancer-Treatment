@@ -98,8 +98,10 @@ def getFeature(modelName, featureLen, PATH = '../model/doc2vec/'):
 		featureLen, the final feature length of document feature
 		PATH, path to text model folder
 	@return:
-		X, document features, [N, featureLen]
-		y, label of documents, [N, ]
+		a dict of {X_train, X_test, label}
+			X_train, document features in training set, [N, featureLen]
+			X_test, ... in test set, [N_test, featureLen]
+			label, label of documents, [N, ]
 	'''
 	[all_data, train_size, test_size, train_x, train_y, test_x] = util.loadData()
 	sentences = util.data_preprocess(all_data)
@@ -115,11 +117,13 @@ def getFeature(modelName, featureLen, PATH = '../model/doc2vec/'):
 	test_set = np.hstack((truncated_one_hot_gene[train_size:], truncated_one_hot_variation[train_size:], text_test_arrays))
 	encoded_y = pd.get_dummies(train_y)
 	encoded_y = np.array(encoded_y)
-	X = np.array(train_set)
+	X_train = np.array(train_set)
+	X_test = np.array(test_set)
 	y = np.array(bc.getLabels(encoded_y))
 	svd = TruncatedSVD(n_components = featureLen, random_state = 2)
-	X_k = svd.fit_transform(X)
+	X_k_train = svd.fit_transform(X_train)
+	X_k_test = svd.fit_transform(X_test)
 	print("Feature with length " + str(featureLen)+ " using " + modelName)
-	return X_k, y
+	return {'X_train': X_k_train, 'X_test' : X_k_test, 'label' :y}
 
 
