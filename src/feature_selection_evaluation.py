@@ -55,7 +55,6 @@ def runTextModelEval(textModelName = [], PATH = '../model/doc2vec/'):
 		print('Results for TextModel: ' + textModel)
 		cm = bc.baseline(X, y)
 
-#TODO!
 def runFeatLenEval(modelName, featLen = [], PATH = '../model/doc2vec/'):
 	'''
 	Given textModel and a list of feature length, conduct truncated SVD to reduce the length of feature vector.
@@ -71,7 +70,7 @@ def runFeatLenEval(modelName, featLen = [], PATH = '../model/doc2vec/'):
 		model = wel.loadTextModel(PATH + modelName)
 	except:
 		print('Failed open textModel: ' + PATH + modelName)
-		
+
 	svd = TruncatedSVD(n_components=GENE_INPUT_DIM, random_state=12)
 	text_train_arrays, text_test_arrays = wel.getTextVec(model, train_size, test_size, 200)
 	truncated_one_hot_gene = wel.getGeneVec(all_data, svd)
