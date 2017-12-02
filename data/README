@@ -1,0 +1,18 @@
+This folder contains the data required for this Kaggle project, includes:
+
+./state_2_private_solution.csv
+./stage1_solution_filtered.csv
+./stage2_sample_submission.csv
+./stage2_test_variants.csv
+./stage2_test_text.csv
+./test_text
+./test_variants
+./training_text
+./training_variants
+./bio_nlp_vec/PubMed-shuffle-win-2.bin
+./bio_nlp_vec/PubMed-shuffle-win-30.bin
+
+You can download the original files from 
+https://www.kaggle.com/c/msk-redefining-cancer-treatment/data
+and bio_nlp_vec downloaded from BioNLP-2016 github repository, you can find the link on the bottom.
+https://github.com/cambridgeltl/BioNLP-2016 

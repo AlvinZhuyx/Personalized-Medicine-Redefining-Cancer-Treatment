@@ -64,6 +64,24 @@ def loadTextModel(filename = ''):
     print('Successfully loaded the textmodel from ' + filename)
     return text_model
 
+def trainTextModel(sentences, param, modelName, PATH = '../model/doc2vec/', outside = False, source_file = ''):
+    if not os.path.isdir(PATH):
+        os.mkdir(PATH)
+    text_model = util.Doc2VecWrapper(param)
+    text_model.build_vocab(sentences)
+    if(outside):
+        try:
+            text_model.intersect_word2vec_format(source_file, binary = True, lockf = 0.0)
+        except:
+            print("Unable to load outside file: " + source_file)
+            return None
+    text_model.train(sentences, total_examples=text_model.corpus_count, epochs=text_model.iter)
+    print('Successfully trained the text model!')
+    text_model.save(PATH + modelName)
+    print('Save the model to: ' + PATH)
+    return text_model
+
+
 
 def getTextVec(text_model, train_size, test_size, TEXT_INPUT_DIM = 200):
     '''
