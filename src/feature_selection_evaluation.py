@@ -88,4 +88,38 @@ def runFeatLenEval(modelName, featLen = [], PATH = '../model/doc2vec/'):
 		print("Feature length selection, length = " + str(k) + " using "   + modelName)
 		cm = bc.baseline(X_k, y)
 	return
-		
+
+def getFeature(modelName, featureLen, PATH = '../model/doc2vec/'):
+	'''
+	Given a text model, and feature length, loading data and compute the document features
+
+	@param:
+		modelName, name of text model
+		featureLen, the final feature length of document feature
+		PATH, path to text model folder
+	@return:
+		X, document features, [N, featureLen]
+		y, label of documents, [N, ]
+	'''
+	[all_data, train_size, test_size, train_x, train_y, test_x] = util.loadData()
+	sentences = util.data_preprocess(all_data)
+	try:
+		model = wel.loadTextModel(PATH + modelName)
+	except:
+		print('Failed open textModel: ' + PATH + modelName)
+	svd = TruncatedSVD(n_components=GENE_INPUT_DIM, random_state=12)
+	text_train_arrays, text_test_arrays = wel.getTextVec(model, train_size, test_size, 200)
+	truncated_one_hot_gene = wel.getGeneVec(all_data, svd)
+	truncated_one_hot_variation = wel.getVariationVec(all_data, svd)
+	train_set = np.hstack((truncated_one_hot_gene[:train_size], truncated_one_hot_variation[:train_size], text_train_arrays))
+	test_set = np.hstack((truncated_one_hot_gene[train_size:], truncated_one_hot_variation[train_size:], text_test_arrays))
+	encoded_y = pd.get_dummies(train_y)
+	encoded_y = np.array(encoded_y)
+	X = np.array(train_set)
+	y = np.array(bc.getLabels(encoded_y))
+	svd = TruncatedSVD(n_components = featureLen, random_state = 2)
+	X_k = svd.fit_transform(X)
+	print("Feature with length " + str(featureLen)+ " using " + modelName)
+	return X_k, y
+
+
