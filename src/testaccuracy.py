@@ -8,7 +8,7 @@ Created on Mon Oct 30 23:13:01 2017
 import pandas as pd
 import numpy as np
 
-def calculatetestloss(y_predict_final, testlabefile = "../data/stage_2_private_solution.csv"):
+def calculatetestloss(y_predict_final, testlabelfile = "../data/stage_2_private_solution.csv"):
     test_solution = pd.read_csv(testlabelfile, sep = ",")
     test_id = test_solution['ID'].values
     test_result = np.array(test_solution.drop('ID', axis = 1))

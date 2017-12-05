@@ -114,7 +114,35 @@ def baseline(X, y, skf = StratifiedKFold(n_splits=10, random_state = 66, shuffle
 	return mat
 
 
+def getBaseline(X, y, clf, skf = StratifiedKFold(n_splits=10, random_state = 66, shuffle = True)):
+	ret = []
+	mat = 0
+	LOSS = []
+	ACC = []
+	NMI = []
+	for train_index, test_index in skf.split(X, y):
+		X_train, X_test = X[train_index], X[test_index]
+		y_train, y_test = y[train_index], y[test_index]
+		clf.fit(X_train, y_train)
+		y_pred = clf.predict(X_test)
+		y_pred_proba = clf.predict_proba(X_test)
+		acc = accuracy_score(y_test, y_pred)
+		nmi = normalized_mutual_info_score(y_pred, y_test)
+		loss = log_loss(y_test, y_pred_proba)
+		ACC.append(acc)
+		LOSS.append(loss)
+		NMI.append(nmi)
 
-
+		cnf_matrix = confusion_matrix(y_test, y_pred)
+		mat = mat + cnf_matrix
+	print("Accuracy: %.4f ± %.4f" % (np.mean(ACC), np.std(ACC)))
+	print("NMI: %.4f ± %.4f" % (np.mean(NMI), np.std(NMI)))
+	print("Log_loss: %.4f ± %.4f" % (np.mean(LOSS), np.std(LOSS)))
+	mat = mat / skf.get_n_splits()
+	mat = np.array(mat)
+	mat = mat.astype('float') / mat.sum(axis=1)[:, np.newaxis]
+	util.plot_confusion_matrix(mat, classes='', normalize=True,
+                      title='Confusion matrix')
+	return mat
 
 
