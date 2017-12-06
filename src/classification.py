@@ -12,7 +12,16 @@ import matplotlib.pyplot as plt
 
 from keras.models import Sequential
 from keras.layers import Dense, Dropout
-from keras import optimizers 
+from keras import optimizers
+import numpy as np
+import util
+from sklearn.metrics import accuracy_score
+from sklearn.metrics import confusion_matrix
+from sklearn.metrics import log_loss
+from sklearn.metrics.cluster import normalized_mutual_info_score
+from sklearn.neighbors import KNeighborsClassifier
+import matplotlib.pyplot as plt
+from sklearn.model_selection import StratifiedKFold
 
 '''
 define a neural network model as the classifier
@@ -85,6 +94,54 @@ def train_nn_model(model, train_set, encoded_y, filename = 'best_weight_predict_
         plt.legend(['train', 'valid'], loc='upper left')
         plt.show()
     return model
+
+def train_nn_model_simple(model, train_set, encoded_y, filename = 'best_weight_predict_all.h5'):
+    print('begin training\n')
+    best_acc = 0
+    acc = []
+    val_acc = []
+    loss = []
+    val_loss = []
+    for i in range(30):
+        estimator=model.fit(train_set, encoded_y, validation_split=0.01, epochs=2, batch_size=64)
+        if (best_acc < estimator.history['val_acc'][-1] * 100):
+            best_acc = estimator.history['val_acc'][-1] * 100
+            model.save_weights(filename)
+    return model
+
+def nn_cross_validation(X, y, skf = StratifiedKFold(n_splits=10, random_state = 66, shuffle = True)):
+    ret = []
+    mat = 0
+    LOSS = []
+    ACC = []
+    NMI = []
+    for train_index, test_index in skf.split(X, y):
+        X_train, X_test = X[train_index], X[test_index]
+        y_train, y_test = y[train_index], y[test_index]
+        model = nn_baseline_model(25, 25, 200)
+        train_nn_model_simple(model, X_train, y_train, 'temp.h5')
+
+        y_pred_proba = model.predict_proba(X_test)
+        y_pred = np.argmax(y_predict, axis = 1)
+
+        acc = accuracy_score(y_test, y_pred)
+        nmi = normalized_mutual_info_score(y_pred, y_test)
+        loss = log_loss(y_test, y_pred_proba)
+        ACC.append(acc)
+        LOSS.append(loss)
+        NMI.append(nmi)
+        cnf_matrix = confusion_matrix(y_test, y_pred)
+        mat = mat + cnf_matrix
+    print("Accuracy: %.4f ± %.4f" % (np.mean(ACC), np.std(ACC)))
+    print("NMI: %.4f ± %.4f" % (np.mean(NMI), np.std(NMI)))
+    print("Log_loss: %.4f ± %.4f" % (np.mean(LOSS), np.std(LOSS)))
+    mat = mat / skf.get_n_splits()
+    mat = np.array(mat)
+    mat = mat.astype('float') / mat.sum(axis=1)[:, np.newaxis]
+    util.plot_confusion_matrix(mat, classes='', normalize=True,
+                      title='Confusion matrix')
+    return mat
+
 
 '''
 #predict for the new data
