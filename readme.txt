@@ -1,11 +1,17 @@
+！！！！！ThiS version is little outdated ！！！！Please refer to the release branch for our latest version ！！！！！！！！
+！！！！！ThiS version is little outdated ！！！！Please refer to the release branch for our latest version ！！！！！！！！
+！！！！！ThiS version is little outdated ！！！！Please refer to the release branch for our latest version ！！！！！！！！
+！！！！！ThiS version is little outdated ！！！！Please refer to the release branch for our latest version ！！！！！！！！
+！！！！！ThiS version is little outdated ！！！！Please refer to the release branch for our latest version ！！！！！！！！
+！！！！！ThiS version is little outdated ！！！！Please refer to the release branch for our latest version ！！！！！！！！
+
 This code is for Kaggle competition: Personalized Medicine: Redefining Cancer Treatment
 
 The codes are python based and it's organized as follows:
 The data_load.py load csv data
 The data_preprocessing.py do data cleaning
-The word_embedding.py do doc embedding by Doc2Vec;
-The word_embedding_load.py is another way to get doc embedding: we load the existed word embedding trained on PubMed by Chiu.(2016) and trained doc vector based on these vectors.
-The classification.py trained a classification model on word embedding;(now we use NN)
+The word_embedding_load.py usede to get doc embedding or load the existed word embedding trained on PubMed by Chiu.(2016) and trained doc vector based on these vectors.
+The NN classification.py trained a classification model on word embedding;
 The xgboost_classifier.py using the xgboost tree to do the classfication;(using word embedding as input)
 The testaccuracy.py calculation the test accuracy by the classification model we just trained;
 The load_test.py load the stage-2 data and test the accuracy;
