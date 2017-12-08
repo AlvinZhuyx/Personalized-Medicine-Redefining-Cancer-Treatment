@@ -1,5 +1,5 @@
 # Personalized-Medicine-Redefining-Cancer-Treatment
-UCLA-CS249-Project__
+UCLA-CS249-Project  
 [Kaggle Contest](https://www.kaggle.com/c/msk-redefining-cancer-treatment)
 
 ## Report:
@@ -46,6 +46,6 @@ More attempt on enhancement, discussed in section 8
 ```
 
 ## Data:
-[Kaggle](https://www.kaggle.com/c/msk-redefining-cancer-treatment/data) Official dataset from Kaggle.
-[bio_nlp_vec](https://github.com/cambridgeltl/BioNLP-2016) Word vectors from BioNLP-2016
+[Kaggle](https://www.kaggle.com/c/msk-redefining-cancer-treatment/data) Official dataset from Kaggle  
+[bio_nlp_vec](https://github.com/cambridgeltl/BioNLP-2016) Word vectors from BioNLP-2016  
 [Pre-trained Model](https://drive.google.com/drive/folders/1703i996nsfiDldvK8_aTT1G2nX4i1Qnu?usp=sharing) Here is the url for pre-trained word embeddings
