@@ -13,7 +13,6 @@ from data_preprocessing import *
 import word_embedding_load as wel
 from classification import *
 from xgboost_classifier import *
-from testaccuracy import *
 from enhanced import *
 
 [all_data, train_size, test_size, train_x, train_y, test_x] = util.loadData()
@@ -79,4 +78,4 @@ train_set[0, 25:50]
 for i in range(len(train_y)):
     train_y[i] -=1  
 y_predict = xgbclassifier(train_set, train_y, test_set, 1, 8, 1000)
-savesubmisstion(y_predict, test_x, filename = "submission_allwin2loadenhance.csv")
+util.savesubmisstion(y_predict, test_x, filename = "submission_allwin2loadenhance.csv")
