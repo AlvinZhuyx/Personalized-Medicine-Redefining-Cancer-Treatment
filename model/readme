@@ -1,4 +1,8 @@
 This folder contains NN models weights and word2vec pretrained model.
-./word2vec/ contains docEmbedding models. Each model consists of 3 files, ***, ***.syn1neg.npy, ***.wv.syn0.npy.
+./word2vec/ contains docEmbedding models. Each model consists of 3 files:
+MODEL_NAME, 
+MODEL_NAME.syn1neg.npy,
+MODEL_NAME.wv.syn0.npy.
+
 Pretrained models could be found:
 https://drive.google.com/drive/folders/1703i996nsfiDldvK8_aTT1G2nX4i1Qnu?usp=sharing
