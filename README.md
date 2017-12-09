@@ -3,7 +3,7 @@ UCLA-CS249-Project
 Team: SQLZW  
 [Kaggle Contest](https://www.kaggle.com/c/msk-redefining-cancer-treatment)  
 
-## Dependicies:
+## Dependencies:
 Python 3.5+ with Anaconda  
 [Tensorflow](https://www.tensorflow.org), [keras](https://keras.io), [xgboost](http://xgboost.readthedocs.io/en/latest/), [gensim](https://radimrehurek.com/gensim/models/word2vec.html), [nltk](http://www.nltk.org), sklearn, pandas
 
