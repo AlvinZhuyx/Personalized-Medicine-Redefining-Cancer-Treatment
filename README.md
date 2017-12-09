@@ -7,7 +7,7 @@ UCLA-CS249-Project
 ## Codes:
 All codes and demos in ./src/
 
-### * demo_NN.ipynb
+### * [demo_NN.ipynb](./src/demo_NN.ipynb)
 ```
 Complete system pipeline, demo using Neural Network 
 ```
