@@ -28,6 +28,8 @@ About feature and model evaluation
 NN model initialization and classification  
 ### [enhance_experiment.py](./src/enhance_experiment.py) & [enhanced.py](./src/enhanced.py)  
 More attempt on enhancement, discussed in section 8  
+### [data_overview.Rmd](./src/data_overview.Rmd)
+R markdown code (open and run/knit with RStudio) for generating the resuls of data_overview
 
 ## Data:
 [Kaggle](https://www.kaggle.com/c/msk-redefining-cancer-treatment/data) Official dataset from Kaggle  
