@@ -1,0 +1,193 @@
+---
+title: "PMRCT_data_overview"
+author: "don"
+date: "December 2, 2017"
+output:
+  html_document: default
+  pdf_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+This is the R markdown document for all of our data overview procedures. 
+
+```{r imports, results='hide', echo=TRUE}
+library('readr')
+library(stats)
+library('dplyr')
+library('tidyr')
+library('tibble')
+library('stringr')
+library('ggplot2')
+```
+
+The first step is to import the data for later analyze. We focus on four files: training_variants, training_text, stage2_test_variants.csv, and stage2_test_text.csv. The variants files are easy to import with read.csv() fuction. The text files are a little bit more complicated because in the data files the first line which indiccates the name of each column is separated into colunmns as it should be, where as the following lines are not, ie. the lines are in column. For this reason, we take use of the tibble library to first read in each line as a long character object and then manually separate the data and name the features. 
+
+```{r dataloading, echo=TRUE}
+
+train_gene_variants <- read.csv('../data/training_variants')
+test_gene_variants <- read.csv('../data/stage2_test_variants.csv')
+train_gene_variants2 <- read.csv('../data/test_variants')
+
+train_text_temp <- tibble( text=read_lines('../data/training_text', skip = 1 ))
+train_text <- train_text_temp %>%
+  separate(text, into = c("ID", "text"), sep = "\\|\\|")
+train_text <- train_text %>%
+  mutate(ID = as.integer(ID))
+
+test_text_dump <- tibble(text = read_lines('../data/stage2_test_text.csv', skip = 1))
+test_text <- test_text_dump %>%
+  separate(text, into = c("ID", "text"), sep = "\\|\\|")
+test_text <- test_text %>%
+  mutate(ID = as.integer(ID))
+
+```
+
+## Gene and Variation Data
+Next step, let take a look at what our genes and variants data look like. 
+
+```{r basic summaries, echo=TRUE}
+train_gene_variants <- train_gene_variants %>%
+  mutate(Gene = factor(Gene),
+         Variation = factor(Variation),
+         Class = factor(Class))
+
+test_gene_variants <- test_gene_variants %>%
+  mutate(Gene = factor(Gene),
+         Variation = factor(Variation))
+```
+
+```{r summary of training gene variants, echo=TRUE}
+summary(train_gene_variants, maxsum = 10)
+```
+
+```{r summary of 2nd training set obtained from stage 1 testing, results='hide', warning=FALSE, echo=TRUE}
+train_2_unfilterd <- read_csv('./stage1_solution_filtered.csv')
+train_gene_variants2 <- full_join( train_gene_variants2, train_2_unfilterd, by= 'ID')
+train_gene_variants2 <- train_gene_variants2 %>%
+  filter(!is.na(class1))
+```
+```{r show summary of 2nd training set, echo=TRUE}
+summary(train_gene_variants2)
+```
+
+
+```{r summary of testing gene variants, echo=TRUE}
+summary(test_gene_variants, maxsum = 10)
+```
+
+From now, we would like to do little comparison between the train set and the test set, specifically the distribution of the genes in the data set. 
+
+```{r gene counts, warning=FALSE, echo=TRUE}
+#add a feature to train_text
+count_train_gene <- train_gene_variants %>% 
+  group_by(Gene) %>% 
+  summarise( count = n()/3321) %>%
+  filter( count > 0)
+count_test_gene <- test_gene_variants %>% 
+  group_by(Gene) %>% 
+  summarise( count = n()/986) %>%
+  filter( count > 0)
+
+count_train_gene <- count_train_gene %>%
+  mutate(set = "train")
+count_test_gene <- count_test_gene %>%
+  mutate(set = "test") 
+
+combine_gene <- full_join(count_train_gene, count_test_gene)
+
+combine_gene %>%
+  ggplot(aes(reorder(Gene, -count, FUN = min), count, fill = set)) +
+  geom_point(size = 4, aes(colour=set)) +
+  labs(x = "Gene", y = "Frequency")
+
+```
+
+Draw some conclusion about the data here ...
+
+
+We would also want to investigate if there are combinations of gene and variation that are present in both training and testing set. 
+
+```{r find combination, echo=TRUE}
+combination_gene_variation = merge(train_gene_variants, test_gene_variants, by=c('Gene', 'Variation'))
+summary(combination_gene_variation)
+```
+From the result (if you consider this a result), there is surprisingly 0 combination match between the train data and test data. In other words, none of the gene and variation combination that occurs in one data set can be found in the other. 
+
+
+After getting a general idea about what the gene and variants data look like. We want to investigate some basic and simple relationships between the features (gene and variation) and the label (class). We first look at the relationship between the gene and the class. We only look at genes that are frequent in the dataset, and we define >1% occurancy as frequent. We only look that the training data because the test data is not labeled. 
+
+```{r gene vs class, echo=TRUE} 
+frequent_train_gene <- train_gene_variants %>% 
+  group_by(Gene) %>% 
+  summarise( count = n()) %>%
+  filter( count > 33)
+
+train_gene_variants %>%
+  filter(Gene %in% str_c(frequent_train_gene$Gene)) %>%
+  ggplot(aes(Gene)) + 
+  geom_bar() + 
+  scale_y_log10() + 
+  theme( axis.text.x = element_text( angle=90, vjust=0.5, size=7)) +
+  facet_wrap(~ Class)
+
+```
+
+Draw some conclusions here...
+
+
+Next we look at the relationship between variants and class. Again We only look at variants that are frequent in the dataset with the same definition for frequent being >0.33%. And we only look that the training data because the test data is not labeled. 
+
+```{r variant vs class, echo=TRUE} 
+frequent_train_variants <- train_gene_variants %>% 
+  group_by(Variation) %>% 
+  summarise( count = n()) %>%
+  filter( count > 3)
+
+train_gene_variants %>%
+  filter(Variation %in% str_c(frequent_train_variants$Variation)) %>%
+  ggplot(aes(Variation)) + 
+  geom_bar() + 
+  scale_y_log10() + 
+  theme( axis.text.x = element_text( angle=90, vjust=0.5, size=7)) +
+  facet_wrap(~ Class)
+```
+
+Draw some conclusions here. 
+
+
+## Text Data
+First, let's take a look at what ar text data look like. 
+```{r text data glimpse}
+glimpse(train_text)
+glimpse(test_text)
+```
+This doesn't show us a lot about the data. We look at one specific entry. The str_sub() function is used to control display length. 
+```{r first entry of train_text, echo=TRUE}
+str_sub(train_text$text[1], start =1, end =1e3)
+```
+
+As we can see here, each data entry of the text is a long piece of text of medical writing that one would classify a mutation type (our Class label) based on. Clearly, to turn this piece of text into usable information as a feature input to our machine learning models, we will need to perform some kind of Natural Language Processing on it. We can definitely extract meanings from the text by turning it into vectors, using one of many exisiting words-to-vec libraries. Such vectors can be used as feature inputs to our machine learning models. Additonally, since medical writings are often written with highly specific and precise terms and jargons, the occurence of certain terms in a text and in-occurence in others could also be a useful feature. Therefore, we believe TFIDF is also a viable approach to this problem. 
+
+Before we end our data overview, we can do some simple analysis with the text data, more specifically, the length of the texts. 
+```{r text length, echo=TRUE}
+#add a feature to train_text
+train_text <- train_text %>%
+  mutate(text_length = str_length(text), 
+        set = "train")
+test_text <- test_text %>%
+  mutate(text_length = str_length(text), 
+        set = "test")
+
+combine_text <- full_join(train_text, test_text)
+
+combine_text %>%
+  ggplot(aes(text_length, fill = set)) +
+  geom_histogram(bins = 50) +
+  labs(x = "Text Length")
+```
+
